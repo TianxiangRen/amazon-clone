@@ -18,24 +18,24 @@ const promise = loadStripe("pk_test_51LZMbOCeP2bX1fgGAIsGEjaV4Noeuzghc2Hdss45xs1
 
 function App() {
   const [{}, dispatch] = useStateValue();
-  const getCloudBasket = async (user) => {
+  const getCloudBasket = (user) => {
     let newBasket = []
-    await getDoc(doc(db, 'users', user?.uid, 'basket', 'current_basket')).then((snapshot) => {newBasket = Array(snapshot.data().basket)})
-    
-    return newBasket;
+    onSnapshot(doc(db, 'users', user?.uid, 'basket', 'current_basket'), {
+      next: (snapshot) => {
+      newBasket = snapshot.data().basket
+      console.log("Cloud basket is >>> ", newBasket)
+      dispatch({
+        type:"SET_BASKET",
+        basket: newBasket
+      })},
+      error: (error) => alert(error)
+    })
   }
   useEffect(() => {
     auth.onAuthStateChanged((authUser) => {
         console.log("THE USER IS >>> ", authUser);
         if (auth) {
-          getCloudBasket(authUser).then((value) => {
-            dispatch({
-            type: "SET_BASKET",
-            basket: value[0]
-            });
-
-            console.log("Cloud basket is >>> ", value[0])
-          })
+          getCloudBasket(authUser);
           dispatch({
             type: "SET_USER",
             user: authUser,
