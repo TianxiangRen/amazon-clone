@@ -1,7 +1,6 @@
 import React from "react";
 import "./Subtotal.css";
 import CurrencyFormat from "react-currency-format";
-import Button from "./AmazonButton";
 import { useStateValue } from "./StateProvider";
 import { getBasketTotal } from "./reducer";
 import { Link } from "react-router-dom";

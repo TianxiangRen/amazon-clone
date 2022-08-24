@@ -12,6 +12,7 @@ import { loadStripe } from "@stripe/stripe-js"
 import { Elements } from "@stripe/react-stripe-js"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { doc, getDoc, onSnapshot} from 'firebase/firestore';
+import Registration from "./components/Register";
 
 
 const promise = loadStripe("pk_test_51LZMbOCeP2bX1fgGAIsGEjaV4Noeuzghc2Hdss45xs181oCvNLvlj5xIhajFQAtuo0TGvv9sowz7rTfLExNU2quU007LlcZQZc");
@@ -31,10 +32,11 @@ function App() {
       error: (error) => alert(error)
     })
   }
+
   useEffect(() => {
     auth.onAuthStateChanged((authUser) => {
         console.log("THE USER IS >>> ", authUser);
-        if (auth) {
+        if (authUser && auth) {
           getCloudBasket(authUser);
           dispatch({
             type: "SET_USER",
@@ -54,6 +56,10 @@ function App() {
     <Router>
       <div className="app">
         <Routes>
+          <Route 
+            path="/register"
+            element={<Registration />}
+          />
           <Route
             path="/login"
             element={

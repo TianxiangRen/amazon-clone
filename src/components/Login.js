@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import "./Login.css";
 import { Link, useNavigate } from "react-router-dom";
 import { db, auth } from "./firebase";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -13,28 +16,18 @@ const Login = () => {
     e.preventDefault();
 
     signInWithEmailAndPassword(auth, email, password)
-    .then((auth) => {
-      if(auth){
-        navigate("/");
-      }
-    })
-    .catch((error) => alert(error.message))
+      .then((auth) => {
+        if (auth) {
+          navigate("/");
+        }
+      })
+      .catch((error) => alert(error.message));
 
     // some fancy firebase login things
   };
 
-  const register = (e) => {
-    e.preventDefault();
-    
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((auth) => {
-        // it successfully created a new user with email and password
-        console.log(auth);
-        if(auth) {
-          navigate("/", { replace: true });
-        }
-      })
-      .catch((error) => alert(error.message));
+  const openRegisterPage = () => {
+    navigate("/register");
   };
 
   return (
@@ -75,7 +68,7 @@ const Login = () => {
           Interest-Based Ads Notice.
         </p>
 
-        <button className="login__registerButton" onClick={register}>
+        <button className="login__registerButton" onClick={openRegisterPage}>
           Create your Amazon account
         </button>
       </div>
